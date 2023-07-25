@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>第3周</title>
+    <link href="/2023/07/24/%E7%AC%AC3%E5%91%A8/"/>
+    <url>/2023/07/24/%E7%AC%AC3%E5%91%A8/</url>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><span id="more"></span><ol><li>yum私有仓库的实现及博客输出</li></ol><figure class="highlight stylus"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-id">#yum</span> -y install httpd<br><span class="hljs-selector-id">#systemctl</span> enable <span class="hljs-attr">--now</span> httpd<br><span class="hljs-selector-id">#dnf</span> reposync <span class="hljs-attr">--repoid</span>=epel <span class="hljs-attr">--download-metadata</span> -<span class="hljs-selector-tag">p</span> /var/www/<span class="hljs-selector-tag">html</span><br><br></code></pre></td></tr></table></figure><p><img src="3.1.png" alt="3.1"></p><p><img src="3.2.png" alt="3.2"></p><p>3.画图 TCP协议和三次握手及四次挥手</p><p>TCP三次握手</p><p><img src="3.3.png" alt="3.3"></p><p>TCP四次挥手</p><p><img src="3.4.png" alt="3.4"></p><p>4.静态配置网卡IP，centos/ubuntu实现</p><p><img src="3.5.png" alt="3.5"></p><p><img src="3.6.png" alt="3.6"></p><p><img src="3.7.png" alt="3.7"></p><p>5.实现免密登陆脚本, expect登陆远程主机，将生成的密钥写入到目标主机, expect测试远程登陆。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>第2周</title>
     <link href="/2023/07/09/%E7%AC%AC2%E5%91%A8/"/>
     <url>/2023/07/09/%E7%AC%AC2%E5%91%A8/</url>
