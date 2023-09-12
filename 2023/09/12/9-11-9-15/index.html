@@ -23,10 +23,23 @@
 <meta property="og:site_name" content="5-12 23:30">
 <meta property="og:description" content="背景">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.1.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.2.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.3.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.4.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.5.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.6.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.7.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.8.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.9.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.10.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.11.png">
+<meta property="og:image" content="http://example.com/2023/09/12/9-11-9-15/9.11.12.png">
 <meta property="article:published_time" content="2023-09-12T04:03:01.000Z">
-<meta property="article:modified_time" content="2023-09-12T05:45:11.484Z">
+<meta property="article:modified_time" content="2023-09-12T09:21:11.912Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/09/12/9-11-9-15/VMS/blog/source_posts/9.11.1.png">
   
   
   <title>9.11-9.15 - 5-12 23:30</title>
@@ -196,7 +209,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      41 字
+      703 字
     </span>
   
 
@@ -205,7 +218,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1 分钟
+      6 分钟
     </span>
   
 
@@ -240,6 +253,65 @@
               <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><span id="more"></span>
 
 <p>1.如何只取出ip地址；若有2个如何取出；若有内外网ip，如何单纯取出内网ip</p>
+<p>如何只取出ip地址</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">ifconfig</span> | grep <span class="hljs-string">&#x27;inet&#x27;</span> |head -n1 |awk <span class="hljs-string">&#x27;&#123;print<span class="hljs-variable">$2</span>&#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="VMS\blog\source_posts\9.11.1.png" srcset="/img/loading.gif" lazyload alt="9.11.1"></p>
+<p>若有2个如何取出</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">ifconfig | <span class="hljs-keyword">grep</span> <span class="hljs-string">&#x27;inet&#x27;</span> |<span class="hljs-keyword">grep</span> <span class="hljs-string">&#x27;broadcast&#x27;</span> |head -n2 |awk <span class="hljs-string">&#x27;&#123;print$2&#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="VMS\blog\source_posts\9.11.2.png" srcset="/img/loading.gif" lazyload alt="9.11.2"></p>
+<p>若有内外网ip，如何单纯取出内网ip</p>
+<p>内网ip</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">hostname -<span class="hljs-selector-tag">I</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="VMS\blog\source_posts\9.11.3.png" srcset="/img/loading.gif" lazyload alt="9.11.3"></p>
+<p>外网ip</p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dos">curl myip.ipip.<span class="hljs-built_in">net</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="VMS\blog\source_posts\9.11.4.png" srcset="/img/loading.gif" lazyload alt="9.11.4"></p>
+<p>2.虚拟机增加1块10g盘， 挂在到date目录 格式化xfs</p>
+<ol>
+<li>虚拟机新加10g盘</li>
+</ol>
+<p><img src="VMS\blog\source_posts\9.11.5.png" srcset="/img/loading.gif" lazyload alt="9.11.5"></p>
+<p>   2.添加data目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> /data<br></code></pre></td></tr></table></figure>
+
+<p><img src="VMS\blog\source_posts\9.11.6.png" srcset="/img/loading.gif" lazyload alt="9.11.6"></p>
+<p> 3.新建分区，格式化为xfs格式，挂载在data目录</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">ll <span class="hljs-regexp">/dev/</span>sd*<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">fdisk <span class="hljs-regexp">/dev/</span>sdb<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">mkfs.xfs <span class="hljs-regexp">/dev/</span>sdb -f<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">自动挂载用vim <span class="hljs-regexp">/etc/</span>fstab 选择/data目录 xfs格式 fs_freq（<span class="hljs-number">0</span>不备份 <span class="hljs-number">1</span>备份）和fs_passno（<span class="hljs-number">0</span>不检验 <span class="hljs-number">1</span>检验）<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">df</span> -h<br></code></pre></td></tr></table></figure>
+
+<p>重启后即可发现挂载已经生效</p>
+<p><img src="VMS\blog\source_posts\9.11.7.png" srcset="/img/loading.gif" lazyload alt="9.11.7"></p>
+<p><img src="VMS\blog\source_posts\9.11.8.png" srcset="/img/loading.gif" lazyload alt="9.11.8"></p>
+<p><img src="VMS\blog\source_posts\9.11.9.png" srcset="/img/loading.gif" lazyload alt="9.11.9"></p>
+<p><img src="VMS\blog\source_posts\9.11.10.png" srcset="/img/loading.gif" lazyload alt="9.11.10"></p>
+<p>3.swap 增加10g虚拟盘 挂在到该分区</p>
+<ol>
+<li><p>创建1个10g文件并格式化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> /swap<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">dd <span class="hljs-attribute">if</span>=/dev/zero <span class="hljs-attribute">of</span>=/swap/swapfile <span class="hljs-attribute">bs</span>=1G <span class="hljs-attribute">count</span>=10<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">mkswap <span class="hljs-regexp">/swap/</span>swapfile<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><img src="VMS\blog\source_posts\9.11.11.png" srcset="/img/loading.gif" lazyload alt="9.11.11"></p>
+<p>​    2.启动文件，自动挂载</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">swapon <span class="hljs-regexp">/swap/</span>swapfile<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>fstab 增加一行<span class="hljs-regexp">/swap/</span>swapfile swap swap dafaults <span class="hljs-number">00</span><br></code></pre></td></tr></table></figure>
+
+<p>​    3.重启并确认情况</p>
+<p><img src="9.11.12.png" srcset="/img/loading.gif" lazyload alt="9.11.12"></p>
 
             </div>
             <hr>
