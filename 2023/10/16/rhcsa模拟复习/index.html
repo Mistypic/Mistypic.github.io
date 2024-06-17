@@ -16,12 +16,12 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="复习1.在node1.domain250.example.com上执行以下任务1.配置网络设置 2.配置您的系统以使用默认存储库 3.调试SElinux  4.创建用户账户 5.配置cron 6.创建协作目录 7.配置ntp 8.配置autofs自动挂载 9.配置&#x2F;var&#x2F;tmp&#x2F;fstab 10.配置用户账户 11.查找文件 12.查找字符串 13.创建存档 14.添加sudo免密 15.容器题">
+    <meta name="description" content="复习1.在node1.domain250.example.com上执行以下任务1.配置网络设置（24分） 2.配置您的系统以使用默认存储库（6分） 3.调试SElinux（13分） 4.创建用户账户（30分） 5.配置cron（6分） 6.创建协作目录（19分） 7.配置ntp（6分） 8.配置autofs自动挂载（24分） 9.配置&#x2F;var&#x2F;tmp&#x2F;fstab（37分） 10.配置用户账户（6分">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rhcsa模拟复习">
 <meta property="og:url" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/index.html">
 <meta property="og:site_name" content="5-12 23:30">
-<meta property="og:description" content="复习1.在node1.domain250.example.com上执行以下任务1.配置网络设置 2.配置您的系统以使用默认存储库 3.调试SElinux  4.创建用户账户 5.配置cron 6.创建协作目录 7.配置ntp 8.配置autofs自动挂载 9.配置&#x2F;var&#x2F;tmp&#x2F;fstab 10.配置用户账户 11.查找文件 12.查找字符串 13.创建存档 14.添加sudo免密 15.容器题">
+<meta property="og:description" content="复习1.在node1.domain250.example.com上执行以下任务1.配置网络设置（24分） 2.配置您的系统以使用默认存储库（6分） 3.调试SElinux（13分） 4.创建用户账户（30分） 5.配置cron（6分） 6.创建协作目录（19分） 7.配置ntp（6分） 8.配置autofs自动挂载（24分） 9.配置&#x2F;var&#x2F;tmp&#x2F;fstab（37分） 10.配置用户账户（6分">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/1.png">
 <meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/2.png">
@@ -40,8 +40,15 @@
 <meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/15.png">
 <meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/16.png">
 <meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/17.png">
+<meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/18.png">
+<meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/19.png">
+<meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/20.png">
+<meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/21.png">
+<meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/22.png">
+<meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/23.png">
+<meta property="og:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/24.png">
 <meta property="article:published_time" content="2023-10-16T01:11:57.000Z">
-<meta property="article:modified_time" content="2023-10-16T06:35:10.470Z">
+<meta property="article:modified_time" content="2024-06-17T07:45:08.667Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2023/10/16/rhcsa%E6%A8%A1%E6%8B%9F%E5%A4%8D%E4%B9%A0/1.png">
@@ -214,7 +221,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      457 字
+      613 字
     </span>
   
 
@@ -223,7 +230,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4 分钟
+      6 分钟
     </span>
   
 
@@ -255,29 +262,35 @@
             <h1 style="display: none">rhcsa模拟复习</h1>
             
             <div class="markdown-body">
-              <h1 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h1><h2 id="1-在node1-domain250-example-com上执行以下任务"><a href="#1-在node1-domain250-example-com上执行以下任务" class="headerlink" title="1.在node1.domain250.example.com上执行以下任务"></a>1.在node1.domain250.example.com上执行以下任务</h2><h5 id="1-配置网络设置"><a href="#1-配置网络设置" class="headerlink" title="1.配置网络设置"></a>1.配置网络设置</h5><p><img src="1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
-<h5 id="2-配置您的系统以使用默认存储库"><a href="#2-配置您的系统以使用默认存储库" class="headerlink" title="2.配置您的系统以使用默认存储库"></a>2.配置您的系统以使用默认存储库</h5><p><img src="2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
-<p>3.调试SElinux</p>
-<p><img src="3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
-<h5 id="4-创建用户账户"><a href="#4-创建用户账户" class="headerlink" title="4.创建用户账户"></a>4.创建用户账户</h5><p><img src="4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
-<h5 id="5-配置cron"><a href="#5-配置cron" class="headerlink" title="5.配置cron"></a>5.配置cron</h5><p><img src="5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
-<h5 id="6-创建协作目录"><a href="#6-创建协作目录" class="headerlink" title="6.创建协作目录"></a>6.创建协作目录</h5><p><img src="6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
-<h5 id="7-配置ntp"><a href="#7-配置ntp" class="headerlink" title="7.配置ntp"></a>7.配置ntp</h5><p><img src="7.png" srcset="/img/loading.gif" lazyload alt="7"></p>
-<h5 id="8-配置autofs自动挂载"><a href="#8-配置autofs自动挂载" class="headerlink" title="8.配置autofs自动挂载"></a>8.配置autofs自动挂载</h5><p><img src="8.png" srcset="/img/loading.gif" lazyload alt="8"></p>
-<h5 id="9-配置-var-tmp-fstab"><a href="#9-配置-var-tmp-fstab" class="headerlink" title="9.配置/var/tmp/fstab"></a>9.配置/var/tmp/fstab</h5><p><img src="9.png" srcset="/img/loading.gif" lazyload alt="9"></p>
-<h5 id="10-配置用户账户"><a href="#10-配置用户账户" class="headerlink" title="10.配置用户账户"></a>10.配置用户账户</h5><p><img src="10.png" srcset="/img/loading.gif" lazyload alt="10"></p>
-<h5 id="11-查找文件"><a href="#11-查找文件" class="headerlink" title="11.查找文件"></a>11.查找文件</h5><p><img src="11.png" srcset="/img/loading.gif" lazyload alt="11"></p>
-<h5 id="12-查找字符串"><a href="#12-查找字符串" class="headerlink" title="12.查找字符串"></a>12.查找字符串</h5><p><img src="12.png" srcset="/img/loading.gif" lazyload alt="12"></p>
-<h5 id="13-创建存档"><a href="#13-创建存档" class="headerlink" title="13.创建存档"></a>13.创建存档</h5><p><img src="13.png" srcset="/img/loading.gif" lazyload alt="13"></p>
+              <h1 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h1><h2 id="1-在node1-domain250-example-com上执行以下任务"><a href="#1-在node1-domain250-example-com上执行以下任务" class="headerlink" title="1.在node1.domain250.example.com上执行以下任务"></a>1.在node1.domain250.example.com上执行以下任务</h2><h5 id="1-配置网络设置（24分）"><a href="#1-配置网络设置（24分）" class="headerlink" title="1.配置网络设置（24分）"></a>1.配置网络设置（24分）</h5><p><img src="1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<h5 id="2-配置您的系统以使用默认存储库（6分）"><a href="#2-配置您的系统以使用默认存储库（6分）" class="headerlink" title="2.配置您的系统以使用默认存储库（6分）"></a>2.配置您的系统以使用默认存储库（6分）</h5><p><img src="2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<h5 id="3-调试SElinux（13分）"><a href="#3-调试SElinux（13分）" class="headerlink" title="3.调试SElinux（13分）"></a>3.调试SElinux（13分）</h5><p><img src="3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<h5 id="4-创建用户账户（30分）"><a href="#4-创建用户账户（30分）" class="headerlink" title="4.创建用户账户（30分）"></a>4.创建用户账户（30分）</h5><p><img src="4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<h5 id="5-配置cron（6分）"><a href="#5-配置cron（6分）" class="headerlink" title="5.配置cron（6分）"></a>5.配置cron（6分）</h5><p><img src="5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<h5 id="6-创建协作目录（19分）"><a href="#6-创建协作目录（19分）" class="headerlink" title="6.创建协作目录（19分）"></a>6.创建协作目录（19分）</h5><p><img src="6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
+<h5 id="7-配置ntp（6分）"><a href="#7-配置ntp（6分）" class="headerlink" title="7.配置ntp（6分）"></a>7.配置ntp（6分）</h5><p><img src="7.png" srcset="/img/loading.gif" lazyload alt="7"></p>
+<h5 id="8-配置autofs自动挂载（24分）"><a href="#8-配置autofs自动挂载（24分）" class="headerlink" title="8.配置autofs自动挂载（24分）"></a>8.配置autofs自动挂载（24分）</h5><p><img src="8.png" srcset="/img/loading.gif" lazyload alt="8"></p>
+<h5 id="9-配置-var-tmp-fstab（37分）"><a href="#9-配置-var-tmp-fstab（37分）" class="headerlink" title="9.配置/var/tmp/fstab（37分）"></a>9.配置/var/tmp/fstab（37分）</h5><p><img src="9.png" srcset="/img/loading.gif" lazyload alt="9"></p>
+<h5 id="10-配置用户账户（6分）"><a href="#10-配置用户账户（6分）" class="headerlink" title="10.配置用户账户（6分）"></a>10.配置用户账户（6分）</h5><p><img src="10.png" srcset="/img/loading.gif" lazyload alt="10"></p>
+<h5 id="11-查找文件（6分）"><a href="#11-查找文件（6分）" class="headerlink" title="11.查找文件（6分）"></a>11.查找文件（6分）</h5><p><img src="11.png" srcset="/img/loading.gif" lazyload alt="11"></p>
+<h5 id="12-查找字符串（6分）"><a href="#12-查找字符串（6分）" class="headerlink" title="12.查找字符串（6分）"></a>12.查找字符串（6分）</h5><p><img src="12.png" srcset="/img/loading.gif" lazyload alt="12"></p>
+<h5 id="13-创建存档（6分）"><a href="#13-创建存档（6分）" class="headerlink" title="13.创建存档（6分）"></a>13.创建存档（6分）</h5><p><img src="13.png" srcset="/img/loading.gif" lazyload alt="13"></p>
 <h5 id="14-添加sudo免密"><a href="#14-添加sudo免密" class="headerlink" title="14.添加sudo免密"></a>14.添加sudo免密</h5><p><img src="14.png" srcset="/img/loading.gif" lazyload alt="14"></p>
 <h5 id="15-容器题目"><a href="#15-容器题目" class="headerlink" title="15.容器题目"></a>15.容器题目</h5><p><img src="15.png" srcset="/img/loading.gif" lazyload alt="15"></p>
-<h5 id="16-配置新用户密码策略"><a href="#16-配置新用户密码策略" class="headerlink" title="16.配置新用户密码策略"></a>16.配置新用户密码策略</h5><p><img src="16.png" srcset="/img/loading.gif" lazyload alt="16"></p>
+<h5 id="16-配置新用户密码策略（6分）"><a href="#16-配置新用户密码策略（6分）" class="headerlink" title="16.配置新用户密码策略（6分）"></a>16.配置新用户密码策略（6分）</h5><p><img src="16.png" srcset="/img/loading.gif" lazyload alt="16"></p>
 <h3 id="2-node1附加题"><a href="#2-node1附加题" class="headerlink" title="2.node1附加题"></a>2.node1附加题</h3><h5 id="1-创建shell脚本"><a href="#1-创建shell脚本" class="headerlink" title="1.创建shell脚本"></a>1.创建shell脚本</h5><p><img src="17.png" srcset="/img/loading.gif" lazyload alt="17"></p>
 <h5 id="2-登录普通用户设置欢迎语"><a href="#2-登录普通用户设置欢迎语" class="headerlink" title="2.登录普通用户设置欢迎语"></a>2.登录普通用户设置欢迎语</h5><p>登录到普通用户后提示一句欢迎语‘hello word !’或者用户在登陆前显示欢迎语提示</p>
 <h5 id="3-设置用户默认创建文件UMASK"><a href="#3-设置用户默认创建文件UMASK" class="headerlink" title="3.设置用户默认创建文件UMASK"></a>3.设置用户默认创建文件UMASK</h5><p>用户natasha默认创建一个文件权限r–r–r– 默认创建目录为r-xr-xr-x</p>
 <h5 id="4-生成环境变量"><a href="#4-生成环境变量" class="headerlink" title="4.生成环境变量"></a>4.生成环境变量</h5><p>生成环境变量rhcsa，用户在使用这个变量时输出一句话“This is RHCSA!”</p>
 <p>生成环境变量rhce，用户在使用这个变量时输出一句话“This is RHCE!”</p>
-<h2 id="3-在node2-domain250-example-com上执行以下任务"><a href="#3-在node2-domain250-example-com上执行以下任务" class="headerlink" title="3.在node2.domain250.example.com上执行以下任务"></a>3.在node2.domain250.example.com上执行以下任务</h2>
+<h2 id="3-在node2-domain250-example-com上执行以下任务"><a href="#3-在node2-domain250-example-com上执行以下任务" class="headerlink" title="3.在node2.domain250.example.com上执行以下任务"></a>3.在node2.domain250.example.com上执行以下任务</h2><h5 id="1-设置root密码（6分）"><a href="#1-设置root密码（6分）" class="headerlink" title="1.设置root密码（6分）"></a>1.设置root密码（6分）</h5><p><img src="18.png" srcset="/img/loading.gif" lazyload alt="18"></p>
+<h5 id="2-配置系统以使用默认存储库（6分）"><a href="#2-配置系统以使用默认存储库（6分）" class="headerlink" title="2.配置系统以使用默认存储库（6分）"></a>2.配置系统以使用默认存储库（6分）</h5><p><img src="19.png" srcset="/img/loading.gif" lazyload alt="19"></p>
+<h5 id="3-调整逻辑卷大小（6分）"><a href="#3-调整逻辑卷大小（6分）" class="headerlink" title="3.调整逻辑卷大小（6分）"></a>3.调整逻辑卷大小（6分）</h5><p><img src="20.png" srcset="/img/loading.gif" lazyload alt="20"></p>
+<h5 id="4-添加交换分区（6分）"><a href="#4-添加交换分区（6分）" class="headerlink" title="4.添加交换分区（6分）"></a>4.添加交换分区（6分）</h5><p><img src="21.png" srcset="/img/loading.gif" lazyload alt="21"></p>
+<h5 id="5-创建逻辑卷（18分）"><a href="#5-创建逻辑卷（18分）" class="headerlink" title="5.创建逻辑卷（18分）"></a>5.创建逻辑卷（18分）</h5><p><img src="22.png" srcset="/img/loading.gif" lazyload alt="22"></p>
+<h5 id="6-创建VDO卷（31分）"><a href="#6-创建VDO卷（31分）" class="headerlink" title="6.创建VDO卷（31分）"></a>6.创建VDO卷（31分）</h5><p><img src="23.png" srcset="/img/loading.gif" lazyload alt="23"></p>
+<h5 id="7-配置系统调优（6分）"><a href="#7-配置系统调优（6分）" class="headerlink" title="7.配置系统调优（6分）"></a>7.配置系统调优（6分）</h5><p><img src="24.png" srcset="/img/loading.gif" lazyload alt="24"></p>
+
             </div>
             <hr>
             <div>
@@ -297,12 +310,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2024/02/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%8B%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/09/25/9.25/">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2023/09/21/9.21/">
+                        <span class="hidden-mobile">9.21</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

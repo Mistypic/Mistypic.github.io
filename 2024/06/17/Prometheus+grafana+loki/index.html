@@ -1,0 +1,573 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Prometheus+grafana+lokiLoki 是一个轻量级的日志收集、分析的应用,采用的是 promtail 的方式来获取日志内容并送到 loki 里面进行存储,最终在 grafana 的 datasource 里面添加数据源进行日志的展示。之前一般使用的日志服务是elk,而使用elk可能需要kabana和grafana不断切换，影响效率，而loki相比elk更加轻量级，它使用和Prom">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5-12 23:30">
+<meta property="og:url" content="http://example.com/2024/06/17/Prometheus+grafana+loki/index.html">
+<meta property="og:site_name" content="5-12 23:30">
+<meta property="og:description" content="Prometheus+grafana+lokiLoki 是一个轻量级的日志收集、分析的应用,采用的是 promtail 的方式来获取日志内容并送到 loki 里面进行存储,最终在 grafana 的 datasource 里面添加数据源进行日志的展示。之前一般使用的日志服务是elk,而使用elk可能需要kabana和grafana不断切换，影响效率，而loki相比elk更加轻量级，它使用和Prom">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-17T07:42:38.290Z">
+<meta property="article:modified_time" content="2024-06-17T07:45:08.664Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>5-12 23:30</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-06-17 15:42" pubdate>
+        June 17, 2024 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      9.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      79 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            <div class="markdown-body">
+              <h3 id="Prometheus-grafana-loki"><a href="#Prometheus-grafana-loki" class="headerlink" title="Prometheus+grafana+loki"></a>Prometheus+grafana+loki</h3><p>Loki 是一个轻量级的日志收集、分析的应用,采用的是 promtail 的方式来获取日志内容并送到 loki 里面进行存储,最终在 grafana 的 datasource 里面添加数据源进行日志的展示。之前一般使用的日志服务是elk,而使用elk可能需要kabana和grafana不断切换，影响效率，而loki相比elk更加轻量级，它使用和Prometheus一样的标签作为索引，减少了切换成本，也降低了相应的日志存储大小。本篇于centos8系统上测试搭建</p>
+<h4 id="1-node-exporter"><a href="#1-node-exporter" class="headerlink" title="1.node_exporter"></a>1.node_exporter</h4><p>安装 </p>
+<figure class="highlight apache"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> https://github.com/prometheus/node_exporter/releases/download/v1.<span class="hljs-number">7</span>.<span class="hljs-number">0</span>/node_exporter-<span class="hljs-number">1</span>.<span class="hljs-number">7</span>.<span class="hljs-number">0</span>.linux-amd64.tar.gz<br><span class="hljs-attribute">tar</span> xvf node_exporter-<span class="hljs-number">1</span>.<span class="hljs-number">7</span>.<span class="hljs-number">0</span>.linux-amd64.tar.gz<br><span class="hljs-attribute">cd</span> node_exporter-<span class="hljs-number">1</span>.<span class="hljs-number">7</span>.<span class="hljs-number">0</span>.linux-amd64/<br><span class="hljs-attribute">sudo</span> cp -p node_exporter /usr/local/bin<br></code></pre></td></tr></table></figure>
+
+<p>服务</p>
+<ul>
+<li>创建一个 systemd 单元文件。</li>
+</ul>
+<p>/usr/lib/systemd/system/nodeexporter.service</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=NodeExporter<br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">Type</span>=simple<br><span class="hljs-attr">ExecStart</span>=/usr/local/bin/node_exporter<br><span class="hljs-attr">Restart</span>=always<br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>注册并启动 Node Exporter 作为服务。</li>
+</ul>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nsis">sudo <span class="hljs-params">system</span>ctl daemon-reload<br>sudo <span class="hljs-params">system</span>ctl enable nodeexporter.service<br>sudo <span class="hljs-params">system</span>ctl start nodeexporter.service<br>sudo <span class="hljs-params">system</span>ctl status nodeexporter.service<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>检查是否可以侦听 9100/tcp。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml">[ec2-user@ip-10-0-0-124 bin]$ curl localhost:9100<br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Node Exporter<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"><span class="hljs-selector-tag">body</span> &#123;</span><br><span class="language-css">  <span class="hljs-attribute">font-family</span>: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;</span><br><span class="language-css">  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;</span><br><span class="language-css">&#125;</span><br><span class="language-css">……</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-promtail"><a href="#2-promtail" class="headerlink" title="2.promtail"></a>2.promtail</h4><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul>
+<li>下载并安装材料。</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">wget https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/grafana/</span>loki<span class="hljs-regexp">/releases/</span>download<span class="hljs-regexp">/v2.9.5/</span>promtail-linux-amd64.zip<br>unzip promtail-linux-amd64.zip<br>sudo cp -p promtail-linux-amd64 <span class="hljs-regexp">/usr/</span>local/bin<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>创建配置文件。</li>
+</ul>
+<p>/etc/promtail/promtail-local-config.yaml</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">server</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">http_listen_port</span><span class="hljs-punctuation">:</span> <span class="hljs-string">9080</span><br>  <span class="hljs-attribute">grpc_listen_port</span><span class="hljs-punctuation">:</span> <span class="hljs-string">0</span><br><br><span class="hljs-attribute">positions</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">filename</span><span class="hljs-punctuation">:</span> <span class="hljs-string">/tmp/positions.yaml</span><br><br><span class="hljs-attribute">clients</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">url: http://10.0.0.249:3100/loki/api/v1/push</span><br><br><span class="hljs-attribute">scrape_configs</span><span class="hljs-punctuation">:</span><br><span class="hljs-bullet">-</span> <span class="hljs-string">job_name: system</span><br>  <span class="hljs-attribute">static_configs</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">targets:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">localhost</span><br>    <span class="hljs-attribute">labels</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-attribute">job</span><span class="hljs-punctuation">:</span> <span class="hljs-string">varlogs</span><br>      <span class="hljs-attribute">__path__</span><span class="hljs-punctuation">:</span> <span class="hljs-string">/var/log/*log</span><br><br><span class="hljs-bullet">-</span> <span class="hljs-string">job_name: nginx</span><br>  <span class="hljs-attribute">static_configs</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">targets:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">localhost</span><br>    <span class="hljs-attribute">labels</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-attribute">job</span><span class="hljs-punctuation">:</span> <span class="hljs-string">nginx</span><br>      <span class="hljs-attribute">__path__</span><span class="hljs-punctuation">:</span> <span class="hljs-string">/var/log/nginx/access.log</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h4><ul>
+<li>创建一个 systemd 单元文件。</li>
+</ul>
+<p>/usr/lib/systemd/system/promtail.service</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Promtail<br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">Type</span>=simple<br><span class="hljs-attr">ExecStart</span>=/usr/local/bin/promtail-linux-amd64 --config.file=/etc/promtail/promtail-local-config.yaml<br><span class="hljs-attr">Restart</span>=always<br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>注册并启动 Promtail 作为服务。</li>
+</ul>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs subunit">[ec2-user@ip<span class="hljs-string">-10</span><span class="hljs-string">-0</span><span class="hljs-string">-0</span><span class="hljs-string">-124</span> ~]$ sudo systemctl daemon-reload<br>[ec2-user@ip<span class="hljs-string">-10</span><span class="hljs-string">-0</span><span class="hljs-string">-0</span><span class="hljs-string">-124</span> ~]$ sudo systemctl enable promtail.service<br>[ec2-user@ip<span class="hljs-string">-10</span><span class="hljs-string">-0</span><span class="hljs-string">-0</span><span class="hljs-string">-124</span> ~]$ sudo systemctl start promtail.service<br>[ec2-user@ip<span class="hljs-string">-10</span><span class="hljs-string">-0</span><span class="hljs-string">-0</span><span class="hljs-string">-124</span> ~]$ sudo systemctl status promtail.service<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>检查是否可以侦听 9080/tcp。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml">[ec2-user@ip-10-0-0-124 ~]$ curl localhost:9080/targets<br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;Content-Type&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;robots&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;noindex,nofollow&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Targets<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;shortcut icon&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/static/img/favicon.ico?v=%28version%3d2.9.0%2c%20branch%3dHEAD%2c%20revision%3d2feb64f69%29&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/static/vendor/js/jquery-3.5.1.min.js?v=%28version%3d2.9.0%2c%20branch%3dHEAD%2c%20revision%3d2feb64f69%29&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/static/vendor/js/popper.min.js?v=%28version%3d2.9.0%2c%20branch%3dHEAD%2c%20revision%3d2feb64f69%29&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/static/vendor/bootstrap-4.1.3/js/bootstrap.min.js?v=%28version%3d2.9.0%2c%20branch%3dHEAD%2c%20revision%3d2feb64f69%29&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>……<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-prometheus"><a href="#3-prometheus" class="headerlink" title="3.prometheus"></a>3.prometheus</h4><p>安装</p>
+<ul>
+<li>下载并安装材料。</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> https://github.com/prometheus/prometheus/releases/download/v2.<span class="hljs-number">50</span>.<span class="hljs-number">1</span>/prometheus-<span class="hljs-number">2</span>.<span class="hljs-number">50</span>.<span class="hljs-number">1</span>.linux-amd64.tar.gz<br><span class="hljs-attribute">tar</span> xvf prometheus-<span class="hljs-number">2</span>.<span class="hljs-number">50</span>.<span class="hljs-number">1</span>.linux-amd64.tar.gz<br><span class="hljs-attribute">cd</span> prometheus-<span class="hljs-number">2</span>.<span class="hljs-number">50</span>.<span class="hljs-number">1</span>.linux-amd64/<br><span class="hljs-attribute">sudo</span> cp -p prometheus /usr/local/bin<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>创建配置文件。<ul>
+<li>将 Node Exporter 作为监控目标（JOB）添加到默认配置文件中。</li>
+</ul>
+</li>
+</ul>
+<p>/etc/prometheus/prometheus.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># my global config</span><br><span class="hljs-attr">global:</span><br>  <span class="hljs-attr">scrape_interval:</span> <span class="hljs-string">15s</span> <span class="hljs-comment"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span><br>  <span class="hljs-attr">evaluation_interval:</span> <span class="hljs-string">15s</span> <span class="hljs-comment"># Evaluate rules every 15 seconds. The default is every 1 minute.</span><br>  <span class="hljs-comment"># scrape_timeout is set to the global default (10s).</span><br><br><span class="hljs-comment"># Alertmanager configuration</span><br><span class="hljs-attr">alerting:</span><br>  <span class="hljs-attr">alertmanagers:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">static_configs:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">targets:</span><br>          <span class="hljs-comment"># - alertmanager:9093</span><br><br><span class="hljs-comment"># Load rules once and periodically evaluate them according to the global &#x27;evaluation_interval&#x27;.</span><br><span class="hljs-attr">rule_files:</span><br>  <span class="hljs-comment"># - &quot;first_rules.yml&quot;</span><br>  <span class="hljs-comment"># - &quot;second_rules.yml&quot;</span><br><br><span class="hljs-comment"># A scrape configuration containing exactly one endpoint to scrape:</span><br><span class="hljs-comment"># Here it&#x27;s Prometheus itself.</span><br><span class="hljs-attr">scrape_configs:</span><br>  <span class="hljs-comment"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">job_name:</span> <span class="hljs-string">&quot;prometheus&quot;</span><br><br>    <span class="hljs-comment"># metrics_path defaults to &#x27;/metrics&#x27;</span><br>    <span class="hljs-comment"># scheme defaults to &#x27;http&#x27;.</span><br><br>    <span class="hljs-attr">static_configs:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">targets:</span> [<span class="hljs-string">&quot;localhost:9090&quot;</span>]<br><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">job_name:</span> <span class="hljs-string">&quot;node-exporter&quot;</span><br>    <span class="hljs-attr">static_configs:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">targets:</span> [<span class="hljs-string">&quot;10.0.0.124:9100&quot;</span>]<br><br></code></pre></td></tr></table></figure>
+
+<p>服务</p>
+<ul>
+<li>创建一个 systemd 单元文件。</li>
+</ul>
+<p>/usr/lib/systemd/system/prometheus.service</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Prometheus<br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">Type</span>=simple<br><span class="hljs-attr">ExecStart</span>=/usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml<br><span class="hljs-attr">Restart</span>=always<br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>注册并启动 Prometheus 作为服务。</li>
+</ul>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nsis">sudo <span class="hljs-params">system</span>ctl daemon-reload<br>sudo <span class="hljs-params">system</span>ctl enable prometheus.service<br>sudo <span class="hljs-params">system</span>ctl start prometheus.service<br>sudo <span class="hljs-params">system</span>ctl status prometheus.service<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>检查是否可以侦听 9090/tcp。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml">curl localhost:9090/graph<br><span class="hljs-meta">&lt;!doctype <span class="hljs-keyword">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>/&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;shortcut icon&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;./favicon.ico&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width,initial-scale=1,shrink-to-fit=no&quot;</span>/&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;theme-color&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;#000000&quot;</span>/&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">GLOBAL_CONSOLES_LINK</span>=<span class="hljs-string">&quot;&quot;</span>,<span class="hljs-variable constant_">GLOBAL_AGENT_MODE</span>=<span class="hljs-string">&quot;false&quot;</span>,<span class="hljs-variable constant_">GLOBAL_READY</span>=<span class="hljs-string">&quot;true&quot;</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;manifest&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;./manifest.json&quot;</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">&quot;use-credentials&quot;</span>/&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Prometheus Time Series Collection and Processing Server<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">defer</span>=<span class="hljs-string">&quot;defer&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./static/js/main.78875f45.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;./static/css/main.4858e794.css&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bootstrap&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">noscript</span>&gt;</span>You need to enable JavaScript to run this app.<span class="hljs-tag">&lt;/<span class="hljs-name">noscript</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;root&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-loki"><a href="#4-loki" class="headerlink" title="4.loki"></a>4.loki</h4><ul>
+<li>下载并安装材料。</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><br>wget <span class="hljs-string">&quot;https://github.com/grafana/loki/releases/download/v2.9.5/loki-linux-amd64.zip&quot;</span><br>unzip loki-linux-amd64.zip<br>sudo cp -p loki-linux-amd64 <span class="hljs-regexp">/usr/</span>local/bin<br>wget https:<span class="hljs-regexp">//</span>raw.githubusercontent.com<span class="hljs-regexp">/grafana/</span>loki<span class="hljs-regexp">/main/</span>cmd<span class="hljs-regexp">/loki/</span>loki-local-config.yaml<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>创建配置文件。<ul>
+<li>这次，我们将按原样使用下载的模板（loki-local-config.yaml）。</li>
+</ul>
+</li>
+</ul>
+<p>/etc/loki/loki-local-config.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">auth_enabled:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">http_listen_port:</span> <span class="hljs-number">3100</span><br>  <span class="hljs-attr">grpc_listen_port:</span> <span class="hljs-number">9096</span><br><br><span class="hljs-attr">common:</span><br>  <span class="hljs-attr">instance_addr:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><br>  <span class="hljs-attr">path_prefix:</span> <span class="hljs-string">/tmp/loki</span><br>  <span class="hljs-attr">storage:</span><br>    <span class="hljs-attr">filesystem:</span><br>      <span class="hljs-attr">chunks_directory:</span> <span class="hljs-string">/tmp/loki/chunks</span><br>      <span class="hljs-attr">rules_directory:</span> <span class="hljs-string">/tmp/loki/rules</span><br>  <span class="hljs-attr">replication_factor:</span> <span class="hljs-number">1</span><br>  <span class="hljs-attr">ring:</span><br>    <span class="hljs-attr">kvstore:</span><br>      <span class="hljs-attr">store:</span> <span class="hljs-string">inmemory</span><br><br><span class="hljs-attr">query_range:</span><br>  <span class="hljs-attr">results_cache:</span><br>    <span class="hljs-attr">cache:</span><br>      <span class="hljs-attr">embedded_cache:</span><br>        <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br>        <span class="hljs-attr">max_size_mb:</span> <span class="hljs-number">100</span><br><br><span class="hljs-attr">schema_config:</span><br>  <span class="hljs-attr">configs:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">from:</span> <span class="hljs-number">2020-10-24</span><br>      <span class="hljs-attr">store:</span> <span class="hljs-string">boltdb-shipper</span><br>      <span class="hljs-attr">object_store:</span> <span class="hljs-string">filesystem</span><br>      <span class="hljs-attr">schema:</span> <span class="hljs-string">v11</span><br>      <span class="hljs-attr">index:</span><br>        <span class="hljs-attr">prefix:</span> <span class="hljs-string">index_</span><br>        <span class="hljs-attr">period:</span> <span class="hljs-string">24h</span><br><br><span class="hljs-attr">ruler:</span><br>  <span class="hljs-attr">alertmanager_url:</span> <span class="hljs-string">http://localhost:9093</span><br><br><span class="hljs-comment"># By default, Loki will send anonymous, but uniquely-identifiable usage and configuration</span><br><span class="hljs-comment"># analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Statistics help us better understand how Loki is used, and they show us performance</span><br><span class="hljs-comment"># levels for most users. This helps us prioritize features and documentation.</span><br><span class="hljs-comment"># For more information on what&#x27;s sent, look at</span><br><span class="hljs-comment"># https://github.com/grafana/loki/blob/main/pkg/analytics/stats.go</span><br><span class="hljs-comment"># Refer to the buildReport method to see what goes into a report.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># If you would like to disable reporting, uncomment the following lines:</span><br><span class="hljs-comment">#analytics:</span><br><span class="hljs-comment">#  reporting_enabled: false</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="服务-1"><a href="#服务-1" class="headerlink" title="服务"></a>服务</h4><ul>
+<li>创建一个 systemd 单元文件。</li>
+</ul>
+<p>/usr/lib/systemd/system/loki.service</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Loki<br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">Type</span>=simple<br><span class="hljs-attr">ExecStart</span>=/usr/local/bin/loki-linux-amd64 -config.file=/etc/loki/loki-local-config.yaml<br><span class="hljs-attr">Restart</span>=always<br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>注册并启动 Loki 作为服务。</li>
+</ul>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nsis">sudo <span class="hljs-params">system</span>ctl daemon-reload<br>sudo <span class="hljs-params">system</span>ctl enable loki.service<br>sudo <span class="hljs-params">system</span>ctl start loki.service<br>sudo <span class="hljs-params">system</span>ctl status loki.service<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>检查是否可以侦听 3100/tcp。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl localhost:3100/metrics<br><span class="hljs-comment"># HELP cortex_distributor_ingester_clients The current number of ingester clients.</span><br><span class="hljs-comment"># TYPE cortex_distributor_ingester_clients gauge</span><br>cortex_distributor_ingester_clients 0<br><span class="hljs-comment"># HELP cortex_dns_failures_total The number of DNS lookup failures</span><br><span class="hljs-comment"># TYPE cortex_dns_failures_total counter</span><br>cortex_dns_failures_total&#123;name=<span class="hljs-string">&quot;memberlist&quot;</span>&#125; 0<br>……<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-grafana"><a href="#5-grafana" class="headerlink" title="5.grafana"></a>5.grafana</h4><ul>
+<li><p>下载并安装材料。有关说明，请参阅<a target="_blank" rel="noopener" href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/redhat-rhel-fedora/">“在 RHEL 或 Fedora 上安装 Grafana”。</a></p>
+</li>
+<li><p>import the GPG key:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget -q -O gpg.key https://rpm.grafana.com/gpg.key<br>sudo rpm --import gpg.key<br></code></pre></td></tr></table></figure></li>
+<li><p>Create <code>/etc/yum.repos.d/grafana.repo</code> with the following content:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">[grafana]<br>name=grafana<br>baseurl=https://rpm.grafana.com<br>repo_gpgcheck=1<br>enabled=1<br>gpgcheck=1<br>gpgkey=https://rpm.grafana.com/gpg.key<br>sslverify=1<br>sslcacert=/etc/pki/tls/certs/ca-bundle.crt<br></code></pre></td></tr></table></figure></li>
+<li><p>To prevent beta versions from being installed, add the following exclude line to your <code>.repo</code> file.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">exclude=*beta*<br></code></pre></td></tr></table></figure></li>
+<li><p>To install Grafana OSS, run the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo dnf install grafana<br></code></pre></td></tr></table></figure></li>
+<li><p>将 Grafana 配置为始终作为服务启动。</p>
+</li>
+</ul>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">sudo systemctl <span class="hljs-keyword">enable</span> grafana-<span class="hljs-keyword">server</span><br>sudo systemctl <span class="hljs-keyword">start</span> grafana-<span class="hljs-keyword">server</span><br>sudo systemctl status grafana-<span class="hljs-keyword">server</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="操作确认"><a href="#操作确认" class="headerlink" title="操作确认"></a>操作确认</h4><ul>
+<li>使用“http://监控服务器的全球IP:3000/”访问浏览器。安装后的初始 ID/密码为“admin/admin”</li>
+</ul>
+<p>添加监控源直接跳过，只讲关于loki的使用</p>
+<ul>
+<li><p>从创建的仪表板屏幕中，选择“添加可视化”并创建一个新面板。</p>
+</li>
+<li><p>在面板创建屏幕上，设置以下内容并应用。</p>
+<ul>
+<li><p>数据来源：loki</p>
+</li>
+<li><p>查询：{filename=”/var/log/nginx/access.log”}</p>
+<p>保存后大致如下</p>
+<blockquote>
+<p>::1 - - [18/Mar/192:168:148:141 +8880]<br>“GET /test HTTP/1.1” 484 3658”-“”cur1/8.2.1””<br>::1 - - [18/Mar/192:168:148:141 +8880]“GET / HTTP/1.1” 288 615 “-“ “curl/8.2.1” “-“</p>
+<p>这样有告警发生时可以通过loki返回的内容来快速定位</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/17/nginx%20purge%20%E7%BC%93%E5%AD%98%E5%8F%8A%E6%B8%85%E7%90%86/">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

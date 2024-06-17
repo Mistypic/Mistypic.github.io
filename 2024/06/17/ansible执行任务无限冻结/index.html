@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ansible执行任务无限冻结 上午执行debian yml脚本测试机跑任务有报错： 12\ndebug3: Ignored env TERM\r\ndebug3: Ignored env SHELL\r\ndebug3: Ignored env HISTSIZE\r\ndebug3: Ignored env SSH_CLIENT\r\ndebug3: Ignored env SSH_TTY\r\">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5-12 23:30">
+<meta property="og:url" content="http://example.com/2024/06/17/ansible%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1%E6%97%A0%E9%99%90%E5%86%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="5-12 23:30">
+<meta property="og:description" content="ansible执行任务无限冻结 上午执行debian yml脚本测试机跑任务有报错： 12\ndebug3: Ignored env TERM\r\ndebug3: Ignored env SHELL\r\ndebug3: Ignored env HISTSIZE\r\ndebug3: Ignored env SSH_CLIENT\r\ndebug3: Ignored env SSH_TTY\r\">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-17T07:42:38.271Z">
+<meta property="article:modified_time" content="2024-06-17T07:45:08.665Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>5-12 23:30</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-06-17 15:42" pubdate>
+        June 17, 2024 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      54 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            <div class="markdown-body">
+              <h3 id="ansible执行任务无限冻结"><a href="#ansible执行任务无限冻结" class="headerlink" title="ansible执行任务无限冻结"></a>ansible执行任务无限冻结</h3><p> 上午执行debian yml脚本测试机跑任务有报错：</p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><pre><code class="hljs moonscript">\<span class="hljs-name">ndebug3</span>: Ignored env TERM\r\<span class="hljs-name">ndebug3</span>: Ignored env SHELL\r\<span class="hljs-name">ndebug3</span>: Ignored env HISTSIZE\r\<span class="hljs-name">ndebug3</span>: Ignored env SSH_CLIENT\r\<span class="hljs-name">ndebug3</span>: Ignored env SSH_TTY\r\<span class="hljs-name">ndebug3</span>: Ignored env USER\r\<span class="hljs-name">ndebug3</span>: Ignored env LS_COLORS\r\<span class="hljs-name">ndebug3</span>: Ignored env MAIL\r\<span class="hljs-name">ndebug3</span>: Ignored env PATH\r\<span class="hljs-name">ndebug3</span>: Ignored env PWD\r\<span class="hljs-name">ndebug1</span>: Sending env LANG = en_US.UTF<span class="hljs-number">-8</span>\r\ndebug2: channel <span class="hljs-number">0</span>: request env confirm <span class="hljs-number">0</span>\r\ndebug3: send <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">98</span>\r\ndebug3: Ignored env HISTCONTROL\r\<span class="hljs-name">ndebug3</span>: Ignored env SHLVL\r\<span class="hljs-name">ndebug3</span>: Ignored env HOME\r\<span class="hljs-name">ndebug3</span>: Ignored env LOGNAME\r\<span class="hljs-name">ndebug3</span>: Ignored env SSH_CONNECTION\r\<span class="hljs-name">ndebug3</span>: Ignored env LESSOPEN\r\<span class="hljs-name">ndebug3</span>: Ignored env XDG_RUNTIME_DIR\r\<span class="hljs-name">ndebug3</span>: Ignored env LE_WORKING_DIR\r\<span class="hljs-name">ndebug3</span>: Ignored env _\r\ndebug1: Sending <span class="hljs-name">command</span>: /bin/sh -c <span class="hljs-string">&#x27;echo ~ &amp;&amp; sleep 0&#x27;</span>\r\ndebug2: channel <span class="hljs-number">0</span>: request exec confirm <span class="hljs-number">1</span>\r\ndebug3: send <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">98</span>\r\ndebug2: callback done\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: open confirm rwindow <span class="hljs-number">0</span> rmax <span class="hljs-number">32768</span>\r\ndebug2: channel <span class="hljs-number">0</span>: rcvd adjust <span class="hljs-number">2097152</span>\r\ndebug3: receive <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">99</span>\r\ndebug2: <span class="hljs-name">channel_input_status_confirm</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">99</span> id <span class="hljs-number">0</span>\r\ndebug2: exec request accepted on channel <span class="hljs-number">0</span>\r\ndebug3: receive <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">96</span>\r\ndebug2: channel <span class="hljs-number">0</span>: rcvd eof\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: output open -&gt; drain\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: obuf empty\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: close_write\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: output drain -&gt; closed\r\<span class="hljs-name">ndebug3</span>: receive <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">98</span>\r\ndebug1: <span class="hljs-name">client_input_channel_req</span>: channel <span class="hljs-number">0</span> rtype exit-status reply <span class="hljs-number">0</span>\r\ndebug3: receive <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">98</span>\r\ndebug1: <span class="hljs-name">client_input_channel_req</span>: channel <span class="hljs-number">0</span> rtype eow@openssh.com reply <span class="hljs-number">0</span>\r\ndebug2: channel <span class="hljs-number">0</span>: rcvd eow\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: close_read\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: input open -&gt; closed\r\<span class="hljs-name">ndebug3</span>: receive <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">97</span>\r\ndebug2: channel <span class="hljs-number">0</span>: rcvd close\r\<span class="hljs-name">ndebug3</span>: channel <span class="hljs-number">0</span>: will <span class="hljs-keyword">not</span> send data after close\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: almost dead\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: <span class="hljs-name">gc</span>: notify user\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: <span class="hljs-name">gc</span>: user detached\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: send close\r\<span class="hljs-name">ndebug3</span>: send <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">97</span>\r\ndebug2: channel <span class="hljs-number">0</span>: is dead\r\<span class="hljs-name">ndebug2</span>: channel <span class="hljs-number">0</span>: garbage collecting\r\<span class="hljs-name">ndebug1</span>: channel <span class="hljs-number">0</span>: <span class="hljs-name">free</span>: client-session, nchannels <span class="hljs-number">1</span>\r\ndebug3: channel <span class="hljs-number">0</span>: <span class="hljs-name">status</span>: The following connections are <span class="hljs-name">open</span>:\r\n #<span class="hljs-number">0</span> client-session (t4 r0 i3/<span class="hljs-number">0</span> o3/<span class="hljs-number">0</span> fd <span class="hljs-number">-1</span>/<span class="hljs-number">-1</span> cc <span class="hljs-number">-1</span>)\r\n\r\ndebug3: send <span class="hljs-name">packet</span>: <span class="hljs-built_in">type</span> <span class="hljs-number">1</span>\r\ndebug1: fd <span class="hljs-number">1</span> clearing O_NONBLOCK\r\<span class="hljs-name">ndebug1</span>: fd <span class="hljs-number">2</span> clearing O_NONBLOCK\r\<span class="hljs-name">nTransferred</span>: sent <span class="hljs-number">2880</span>, received <span class="hljs-number">3120</span> bytes, <span class="hljs-keyword">in</span> <span class="hljs-number">0.1</span> seconds\r\nBytes per <span class="hljs-name">second</span>: sent <span class="hljs-number">22837.4</span>, received <span class="hljs-number">24740.5</span>\r\ndebug1: Exit status <span class="hljs-number">0</span>\r\n<span class="hljs-string">&#x27;)</span><br><span class="hljs-string">&lt;192.168.180.75&gt; ESTABLISH SSH CONNECTION FOR USER: None</span><br></code></pre></td></tr></table></figure>
+
+<p>同时发现ansible该任务执行情况似乎已停止</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">ANSIBLE_DEBUG</span>=<span class="hljs-literal">True</span><br></code></pre></td></tr></table></figure>
+
+<p>单次运行该任务查看情况</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs routeros">/bin/sh -c <span class="hljs-string">&#x27;chmod u+x /root/.ansible/tmp/ansible-tmp-1709176669.73-1180-262921019047704/ /root/.ansible/tmp/ansible-tmp-1709176669.73-1180-262921019047704/AnsiballZ_command.py &amp;&amp; sleep 0&#x27;</span><br>1180 1709176671.67928: stdout chunk (<span class="hljs-attribute">state</span>=2):<br>&lt;&lt;&lt;<br>1180 1709176671.67973: stderr chunk (<span class="hljs-attribute">state</span>=2):<br>&lt;&lt;&lt;<br>1180 1709176671.68020: _low_level_execute_command() done: <span class="hljs-attribute">rc</span>=0, <span class="hljs-attribute">stdout</span>=, stderr=<br>1180 1709176671.68035: _low_level_execute_command(): starting<br>1180 1709176671.68054: _low_level_execute_command(): using become <span class="hljs-keyword">for</span> this command<br>1180 1709176671.68101: _low_level_execute_command(): executing: /bin/sh -c <span class="hljs-string">&#x27;sudo -H -S -n -u root /bin/sh -c &#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;echo BECOME-SUCCESS-itsgfhbpqzfhwwgkvwphpvjqitbdhyoy ; /usr/bin/python3 /root/.ansible/tmp/ansible-tmp-1709176669.73-1180-262921019047704/AnsiballZ_command.py&#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27; &amp;&amp; sleep 0&#x27;</span><br>1180 1709176671.69024: Initial state: awaiting_escalation: BECOME-SUCCESS-itsgfhbpqzfhwwgkvwphpvjqitbdhyoy<br>1180 1709176671.96794: stdout chunk (<span class="hljs-attribute">state</span>=1):<br>BECOME-SUCCESS-itsgfhbpqzfhwwgkvwphpvjqitbdhyoy&lt;&lt;&lt;<br>1180 1709176671.96832: become_success: (<span class="hljs-attribute">source</span>=stdout, <span class="hljs-attribute">state</span>=awaiting_escalation): <span class="hljs-string">&#x27;BECOME-SUCCESS-itsgfhbpqzfhwwgkvwphpvjqitbdhyoy&#x27;</span><br>1180 1709176671.96864: stdout chunk (<span class="hljs-attribute">state</span>=3):<br><br>&lt;&lt;&lt;<br></code></pre></td></tr></table></figure>
+
+<p>继续排查 -vvv</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">root</span> /bin/sh -c &#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27;echo BECOME-SUCCESS-dumkwdcjgjxigvkqjrjggpnsuhmfzzco ; /usr/bin/python3 /root/.ansible/tmp/ansible-tmp-<span class="hljs-number">1709176773</span>.<span class="hljs-number">03</span>-<span class="hljs-number">3239</span>-<span class="hljs-number">3530003536688</span>/AnsiballZ_command.py&#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27; &amp;&amp; sleep <span class="hljs-number">0</span>&#x27;<span class="hljs-string">&quot;&#x27;&quot;</span>&#x27;&#x27;<br><span class="hljs-attribute">3239</span> <span class="hljs-number">1709176774</span>.<span class="hljs-number">99149</span>: Initial state: awaiting_escalation: BECOME-SUCCESS-dumkwdcjgjxigvkqjrjggpnsuhmfzzco<br><span class="hljs-attribute">3239</span> <span class="hljs-number">1709176775</span>.<span class="hljs-number">27828</span>: stdout chunk (state=<span class="hljs-number">1</span>):<br><span class="hljs-attribute">BECOME</span>-SUCCESS-dumkwdcjgjxigvkqjrjggpnsuhmfzzco<br><span class="hljs-section">&lt;&lt;&lt;</span><br><span class="hljs-section">3239 1709176775.27870: become_success: (source=stdout, state=awaiting_escalation): &#x27;BECOME-SUCCESS-dumkwdcjgjxigvkqjrjggpnsuhmfzzco&#x27;</span><br><span class="hljs-section">Escalation succeeded</span><br></code></pre></td></tr></table></figure>
+
+<p>登录被执行机查看情况<br>运行ansible-playbook时， ansible会将一组代码复制到~/.ansible/tmp/下<br>登录查看 ，发现AnsiballZ_command.py</p>
+<p>查询官网根据<a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/dev_guide/debugging.html">https://docs.ansible.com/ansible/latest/dev_guide/debugging.html</a><br>本人根据以下步骤解压该文件：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">python3</span> AnsiballZ_command.<span class="hljs-keyword">py</span> explode<br></code></pre></td></tr></table></figure>
+
+<p>解压后的文件放在debug_dir</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs smali">python3 -m trace --ignore-dir=/usr/lib --trace AnsiballZ_command.py<span class="hljs-built_in"> execute </span>&gt; /tmp/info.txt 2&gt; /tmp/error.txt<br></code></pre></td></tr></table></figure>
+
+<p>得到以下内容</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs gradle"># egrep -n base64 <span class="hljs-regexp">/tmp/i</span>nfo.txt <span class="hljs-regexp">/tmp/</span>error.txt<br><span class="hljs-regexp">/tmp/i</span>nfo.txt:<span class="hljs-number">24</span>:AnsiballZ_lineinfile.py(<span class="hljs-number">17</span>):     <span class="hljs-keyword">import</span> base64<br><span class="hljs-regexp">/tmp/</span>error.txt:<span class="hljs-number">15</span>:    <span class="hljs-keyword">import</span> base64<br><span class="hljs-regexp">/tmp/</span>error.txt:<span class="hljs-number">16</span>:ModuleNotFoundError: No module named <span class="hljs-string">&#x27;base64&#x27;</span><br><span class="hljs-regexp">/tmp/</span>error.txt:<span class="hljs-number">38</span>:    <span class="hljs-keyword">import</span> base64<br><span class="hljs-regexp">/tmp/</span>error.txt:<span class="hljs-number">39</span>:ModuleNotFoundError: No module named <span class="hljs-string">&#x27;base64&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>发现缺少base64组件，同时ps -ef | grep ansible 也发现有多个进程<br>排查问题模块</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs gams">- name: Update Debian sources.list <span class="hljs-keyword">and</span> update apt cache<br>  hosts: <span class="hljs-keyword">all</span><br>  gather_facts: <span class="hljs-keyword">no</span><br>  tasks: <br>    - name: <span class="hljs-keyword">set</span>  fact<br>      set_fact:<br>        ansible_become: true<br>    - name: task1<br>      shell: |<br>        cd /usr/<span class="hljs-comment">local</span><br>        wget <span class="hljs-comment">https:</span>//<span class="hljs-comment">www.php.net</span>/distributions/<span class="hljs-comment">php-7.4.33.tar.gz</span><br>        tar <span class="hljs-comment">-zvxf</span> /usr/<span class="hljs-comment">local</span>/php<span class="hljs-number">-7.4</span><span class="hljs-number">.33</span>.tar.gz<br>        sudo apt-get install pkg-config<br>        export PKG_CONFIG=/<span class="hljs-comment">usr</span>/bin/<span class="hljs-comment">pkg-config</span><br>        cd /usr/<span class="hljs-comment">local</span>/php<span class="hljs-number">-7.4</span><span class="hljs-number">.33</span><br>        ./<span class="hljs-comment">configure</span><br>        make<br>        make <span class="hljs-comment">install</span><br></code></pre></td></tr></table></figure>
+
+<p>查询官方文档才知道，由于变量的优先顺序问题，set fact还会覆盖任务变量，这导致控制器在sudo时会停止，甚至become也会导致该问题</p>
+<p>去除become等后 ，执行任务依旧报错</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">SSH: EXEC ssh -o <span class="hljs-attribute">ServerAliveInterval</span>=50 -o <span class="hljs-attribute">StrictHostKeyChecking</span>=<span class="hljs-literal">no</span> -o <span class="hljs-string">&#x27;IdentityFile=&quot;/root/.ssh/id_rsa&quot;&#x27;</span> -o <span class="hljs-attribute">KbdInteractiveAuthentication</span>=<span class="hljs-literal">no</span> -o <span class="hljs-attribute">PreferredAuthentications</span>=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o <span class="hljs-attribute">PasswordAuthentication</span>=<span class="hljs-literal">no</span> -o <span class="hljs-attribute">ConnectTimeout</span>=10 -tt 192.168.180.75 <span class="hljs-string">&#x27;/bin/sh -c &#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;sudo -H -S -n -u root /bin/sh -c &#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;&quot;&#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;&quot;&#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;echo BECOME-SUCCESS-zlrfozuysumycjuaiozhypghkpbcwikq ; /usr/bin/python3 /root/.ansible/tmp/ansible-tmp-1709183792.22-8730-100721031127498/AnsiballZ_command.py&#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;&quot;&#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;&quot;&#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27; &amp;&amp; sleep 0&#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>继续排查问题，发现是连接问题，<br>修改主机/etc/ansible/ansible.cfg<br>添加一段 connect_timeout = 30<br>同时 受控机上kill ansible相关进程<br>再次执行，可顺利执行任务</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/17/nginx%20purge%20%E7%BC%93%E5%AD%98%E5%8F%8A%E6%B8%85%E7%90%86/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%8B%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
